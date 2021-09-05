@@ -1,0 +1,81 @@
+html {
+	background: linear-gradient(darkcyan,black) fixed;
+
+}
+html,body{
+	margin: 0;
+	height: 100%;
+}
+#title{
+	color:#4DE1FF;
+}
+h1{ text-align: center ;
+	font-size: 5em;
+}
+.motto{ text-align: end ;
+	font-style: italic;
+	margin-bottom: 10%;
+
+	color:#FFFFFF;
+
+}
+.layout{
+	max-width: 1200px;
+	display: flex;
+	justify-content: center;
+	text-align: start;
+	margin: 0 auto;
+	align-content: space-between;
+	flex-wrap: wrap;
+}
+.network{
+	color:yellowgreen;
+	padding: 1%;
+	align-items: flex-start;
+	text-align:end;
+	font-weight: bold;
+}
+@media screen and (min-width: 1200px){
+	.network{
+		font-size: 1.5em;
+	}
+}
+a.links{
+	text-decoration: none;
+	color:#CCB3FF;
+}
+
+a.links:hover{
+	text-decoration: none;
+	color:hotpink;
+}
+.recent{
+	height: 100%;
+	font-style: italic;
+	font-size:2em;
+	padding: 4%;
+	border: 2px dashed black;
+	border-radius: 5px;
+	font-weight: bold;
+	margin:auto;
+}
+.recentposts{
+
+	color:#CCFFFF;
+}
+.buttons{
+
+	display: flex;
+	padding-top:20%;
+	justify-content: center;
+}
+.button{
+	bottom:1em;
+	margin: 2px;
+}
+
+ul{
+	list-style: none;
+
+}
+
