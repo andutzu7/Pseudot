@@ -26,6 +26,7 @@ h1{ text-align: center ;
 	text-align: start;
 	margin: 0 auto;
 	align-content: space-between;
+		font-size: 1.5em;
 	flex-wrap: wrap;
 }
 .network{
@@ -34,11 +35,6 @@ h1{ text-align: center ;
 	align-items: flex-start;
 	text-align:end;
 	font-weight: bold;
-}
-@media screen and (min-width: 1200px){
-	.network{
-		font-size: 1.5em;
-	}
 }
 a.links{
 	text-decoration: none;
