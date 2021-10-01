@@ -45,6 +45,11 @@ a.links:hover{
 	text-decoration: none;
 	color:hotpink;
 }
+
+a.links:visited{
+	text-decoration: none;
+	color:hotpink;
+}
 .recent{
 	height: 100%;
 	font-style: italic;
