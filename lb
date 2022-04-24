@@ -1,0 +1,91 @@
+#!/bin/bash
+name="pseudot"
+protocol="https"
+webdirroot="Pseudot"
+webdir="$PWD"
+webroot="pseudot.xyz/" # Keep a trailing slash.
+www_var_folder_root="pseudot.xyz"
+css="$webdirroot/$webroot/indexstyle.css"
+blogfile="$webdirroot/$webroot/$(date +%Y).html"
+indexfile="$webdirroot/$webroot/blogindex.html"
+archivefile="$webdir/$webdirroot/.htaccess"
+[ -z "$EDITOR" ] && EDITOR="vim"
+
+[ ! -d "$webdir/$webdirroot/.drafts" ] &&
+read -erp "Initialize blog in $webdir?" ask &&
+	if [ "$ask" = "y" ]; then
+	printf "Initializing blog system...\\n"
+	mkdir -pv "$webdir/$webdirroot/.drafts" || printf "Error. Do you have write permissions in this directory?\\n"
+	echo "Options +Indexes" > "$archivefile"
+else
+	exit
+fi
+
+newpost() { read -erp "Give a title for your post:
+	" title
+	echo "$title" | grep -q "\"" && printf "Double quotation marks (\") are not allowed in entry titles.\\n" && exit
+	url="$(echo "$title" | iconv -cf UTF-8 -t ASCII//TRANSLIT | tr -d '[:punct:]' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed "s/-\+/-/g;s/\(^-\|-\$\)//g")"
+	echo "AddDescription \"$title\" \"$url.html\"" >>  "$archivefile"|| { echo "Error: Is $archivefile writeable?"; exit; }
+	( [ -f "$webdir/$webdirroot/.drafts/$url.html" ] || [ -f "$webdir/$webdirroot/$url.html" ] ) && echo "There is already an existing draft or post of that same name/URL." && exit
+	$EDITOR "$webdir/$webdirroot/.drafts/$url.html" ;}
+
+listandReturn() {
+	printf "Listing contents of %s\\n" "$1"
+	case "$(ls "$1" | wc -l)" in
+		0) echo "There's nothing to $2." && exit 1 ;;
+		1) number=1 && printf "There's only one entry to %s.\\nDefaulting selection to %s\\n" "$2" "$(ls -rc "$1" | awk -F '/' '{print $NF}')" ;;
+		*) ls -rc "$1" | awk -F '/' '{print $NF}' | nl
+                read -erp "Pick an entry by number to $2, or press Ctrl-C to cancel. " number ;;
+	esac
+	chosen="$(ls -rc "$1" | nl | grep -w " $number" | awk '{print $2}')"
+	basefile="$(basename "$chosen")" && base="${basefile%.*}"
+}
+
+publish() { \
+	delete draft
+	htaccessentry=$(grep "$basefile" "$archivefile")
+	realname="$(echo "$htaccessentry" | cut -d'"' -f2)"
+	webdate="$(date '+%a, %d %b %Y %H:%M:%S %z')" # But this visible date you can set to any format.
+	tmpdir=$(mktemp -d)
+	printf "<!DOCTYPE html>\\n<html lang=\"en\">\\n<head>\\n<title>%s</title>\\n<link rel='stylesheet' type='text/css' href='%s'>\\n<meta charset='utf-8'/>\\n</head>\\n<body>\\n<h1>%s</h1>\\n<small>[<a href='%s#%s'>link</a>&mdash;<a href='%s'>standalone</a>]</small>\\n%s\\n<footer>by <strong><a href='%s'>%s</a></strong></footer>\\n</body>\\n\\n</html>" "$realname" "$css" "$realname" "../$blogfile" "$base" "$basefile" "$(cat "$webdir/$webdirroot/.drafts/$basefile")" "$website" "$name" > "$webdir/$webdirroot/$webtarget/posts/$basefile"
+	printf "<div class='entry'>\\n<h2 id='%s'>%s</h2>\\n<small>[<a href='#%s'>link</a>&mdash;<a href='%s'>standalone</a>]</small>\\n%s\\n<small>%s</small>\\n</div>\\n" "$base" "$realname" "$base" "$webdirroot/$basefile" "$(cat "$webdir/$webdirroot/.drafts/$basefile")" "$webdate" > "$tmpdir/html"
+	printf "<li>%s &ndash; <a href=\"$webdirroot/%s\">%s</a></li>\\n" "$(date '+%Y %b %d')" "$basefile" "$realname" > "$tmpdir/index"
+	sed -i "/<!-- LB -->/r $tmpdir/html" "$blogfile"
+	sed -i "/<!-- LB -->/r $tmpdir/index" "$indexfile"
+	sed -i "/ \"$base.html\"/d" "$archivefile"
+	echo "AddDescription \"$realname\" \"$basefile\" "  r>> "$archivefile"
+	rm -f "$webdir/$webdirroot/.drafts/$chosen"
+}
+
+confirm() { read -erp "Really $1 \"$base\"? (y/N) " choice && echo "$choice" | grep -qi "^y$" || exit 1 ;}
+
+delete() { \
+	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$blogfile"
+	sed -i "/<li>.*<a href=\"$webdirroot\\/$base.html\">/d" "$indexfile"
+	rm -f "$webdir/$webdirroot/$basefile" && [[ "$1" != "draft" ]] && printf "Old blog entry removed.\\n";}
+
+revise() { awk '/^<small>\[/{flag=1;next}/<footer>/{flag=0}flag' "$webdir/$webdirroot/$chosen" > "$webdir/$webdirroot/.drafts/$basefile"
+	"$EDITOR" "$webdir/$webdirroot/.drafts/$basefile"
+	printf "Revision stored in $webdirroot/.drafts. Publish as normal entry when desired.\\n" ;}
+
+if [ -z $2 ]
+then
+
+echo "You must specify the site's prefix.";
+printf "Available options: \\n\\t1)blog\\n\\t2)programming\\n\\t3)books\\n\\t4)draw\\n\\t5)uc\\n";
+exit
+else
+website="$protocol://$2.$webroot";
+
+webtarget="$2.$www_var_folder_root"
+fi
+
+case "$1" in
+	a*) newpost ;;
+	e*) listandReturn "$webdir"/$webdirroot/.drafts/ edit && "$EDITOR" "$webdir/$webdirroot/.drafts/$chosen" ;;
+	p*) listandReturn "$webdir"/$webdirroot/.drafts/ publish && publish ;;
+	t*) listandReturn "$webdir"/$webdirroot/.drafts/ trash && confirm trash && rm -f "$webdir/$webdirroot/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "$archivefile" ; printf "Draft deleted.\\n" ;;
+	d*) listandReturn "$webdir"/$webdirroot/ delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "$archivefile" ;;
+	r*) listandReturn "$webdir"/$webdirroot/ revise && revise ;;
+	*) printf "Usage:\\n  lb n:\\tnew draft\\n  lb e:\\tedit draft\\n  lb p:\\tpublish/finalize draft\\n  lb r:\\trevise published entry\\n  lb t:\\tdiscard draft\\n  lb d:\\tdelete published entry\\n\\nBe sure to have the following pattern added to your RSS feed, blog file and blog index:\\n\\n<!-- LB -->\\n\\nNew content will be added directly below that sequence. This is required.\\n" ;;
+esac
