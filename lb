@@ -48,12 +48,14 @@ publish() { \
 	webdate="$(date '+%a, %d %b %Y %H:%M:%S %z')" # But this visible date you can set to any format.
 	tmpdir=$(mktemp -d)
 	$(cp -r "$webdir/.drafts/$basefile" "$webdir/$webtarget/posts/")
+	$(markdown-to-standalone-html -t "$webdir/$webtarget/template.html" "$webdir/$webtarget/posts/$basefile/$basefile.md" > "$webdir/$webtarget/posts/$basefile/$basefile.html");
 	printf "<div class='entry'>\\n<h2 id='%s'>%s</h2>\\n<small>[<a href='%s'>standalone</a>]</small>\\n%s\\n<small>%s</small>\\n</div>\\n" "$base" "$realname" "$webdir/$webtarget/posts/$basefile/$basefile.md" "$(cat "$webdir/.drafts/$basefile/$basefile.md")" "$webdate" > "$tmpdir/html"
 	printf "<li>%s &ndash; <a href=\"%s\">%s</a></li>\\n" "$(date '+%Y %b %d')" "$webdir/$webtarget/posts/$basefile/$basefile.html" "$realname" > "$tmpdir/index"
 	sed -i "/<!-- LB -->/r $tmpdir/html" "$blogfile"
 	sed -i "/<!-- LB -->/r $tmpdir/index" "$indexfile"
 	sed -i "/ \"$base.html\"/d" "$archivefile"
 	echo "AddDescription \"$realname\" \"$basefile\" "  r>> "$archivefile"
+	rm "$webdir/$webtarget/posts/$basefile/$basefile.md"
 	rm -rf "$webdir/.drafts/$chosen"
 }
 
