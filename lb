@@ -1,4 +1,5 @@
 #!/bin/bash
+## Vanilla chocolad
 name="pseudot"
 protocol="https"
 webdir="$PWD"
