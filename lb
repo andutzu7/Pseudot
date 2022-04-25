@@ -52,6 +52,7 @@ publish() { \
 	printf "<div class='entry'>\\n<h2 id='%s'>%s</h2>\\n<small>[<a href='%s'>standalone</a>]</small>\\n%s...\\n<small>%s</small>\\n</div>\\n" "$base" "$realname" "$webdir/$webtarget/posts/$basefile/$basefile.html" "$(head -n 5 "$webdir/.drafts/$basefile/$basefile.md")" "$webdate" > "$tmpdir/html"
 	printf "<li>%s &ndash; <a href=\"%s\">%s</a></li>\\n" "$(date '+%Y %b %d')" "$webdir/$webtarget/posts/$basefile/$basefile.html" "$realname" > "$tmpdir/index"
 	sed -i "/<!-- LB -->/r $tmpdir/html" "$blogfile"
+	sed -i "/<!-- LB -->/r $tmpdir/html"  "$webtarget_blog_file"
 	sed -i "/<!-- LB -->/r $tmpdir/index" "$indexfile"
 	sed -i "/ \"$base.html\"/d" "$archivefile"
 	echo "AddDescription \"$realname\" \"$basefile\" "  r>> "$archivefile"
@@ -84,11 +85,13 @@ else
 website="$protocol://$2.$webroot";
 
 webtarget="$2.$www_var_folder_root"
+webtarget_blog_file="$2.$www_var_folder_root/$(date +%Y).html"
+
 fi
 
 case "$1" in
 	a*) newpost ;;
-	e*) listandReturn "$webdir"/.drafts/ edit && "$EDITOR" "$webdir/.drafts/$chosen/$chosen.html" ;;
+	e*) listandReturn "$webdir"/.drafts/ edit && "$EDITOR" "$webdir/.drafts/$chosen/$chosen.md" ;;
 	p*) listandReturn "$webdir"/.drafts/ publish && publish ;;
 	t*) listandReturn "$webdir"/.drafts/ trash && confirm trash && rm -rf "$webdir/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "$archivefile" ; printf "Draft deleted.\\n" ;;
 	d*) listandReturn "$webdir"/"$webtarget/posts" delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "$archivefile" ;;

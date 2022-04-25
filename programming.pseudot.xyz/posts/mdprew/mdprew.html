@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<!--  <title>Introduction</title>-->
+
+		<title>Pseudoprogramming</title>
+		<meta name="generator" content="https://github.com/EdJoPaTo/markdown-to-standalone-html 0.5.0" />
+
+		<link rel = "icon" href =
+			     "https://imgur.com/PIDOJFA.png" type = "image/x-icon">
+		<style>
+html, body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+	line-height: 1.5;
+}
+
+	body {
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+
+	p{
+		color: white;
+	}
+
+	.toc{
+	}
+
+	nav.toc ul {
+		padding: 0 0 0 10px;
+	}
+
+	nav.toc li {
+		overflow: hidden;
+		text-decoration: none;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+
+	@media screen and (min-width: 600px) {
+		nav.toc {
+			padding: 0;
+			align-items: flex-start;
+			top: 0;
+			bottom: 0;
+			overflow-x: hidden;
+			overflow-y: auto;
+			width: 60%;
+		}
+		main {
+			margin-left: 20px;
+		}
+	}
+
+	@media screen and (min-width: 1300px) {
+		body {
+			max-width: 1100px;
+		}
+		nav.toc {
+			width: 60%;
+		}
+		main {
+			margin-left: 20px;
+		}
+	}
+
+	img {
+		max-width: 100%;
+		display: block;
+		margin: 0 auto;
+	}
+
+	a, p code {
+		color: #00A;
+	}
+
+	code pre {
+		overflow: auto;
+	}
+	h1:not(.title){
+		color:white;
+	}
+	h2:not(.motto){
+
+		color: #6a83c7;
+	}
+	h3,h4,h5,h6{
+		color: #6a83c7;
+	}
+	li:not(.back){
+		color:rgb(255, 255, 255);
+	}
+	em{
+		colorrgb(255, 255, 255);
+	}
+
+	@media (prefers-color-scheme: dark) {
+		html, body {
+			background: linear-gradient(#999900,black) fixed;
+		}
+		a, p code {
+
+			color: #0DD;
+		}
+	}
+
+	.title {
+		color: #fff;
+		padding-left: 2%;
+	}
+	.motto{
+		font-style: italic;
+		text-transform: lowercase;
+		color: #fff;
+		margin-bottom: 10%;
+		margin-right: 2%;
+		text-align: right;
+		font-size: 90%;
+	}
+	.network {
+		font: 90% "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+		text-transform: uppercase;
+		align-items: center;
+
+	}
+	.container {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 5%;
+	}
+	.network li a:hover {
+		color: rgb(0, 0, 0);
+	}
+	.network li a:hover {
+		background-color: #ffffff;
+	}
+	.network li a {
+		display: block;
+		text-decoration: none;
+		min-height: 1.5em;
+		padding: 0 10px 0 40px;
+		border: none;
+		color: rgb(255, 255, 255);
+	}
+	.back a {
+		color: #d2d2c7;
+		text-decoration: underline;
+	}
+	.network li {
+		list-style-type: none;
+	}
+	.network li {
+		width: 10%;
+		list-style-type: none;
+		border-bottom: 1px dotted #fff;
+		background-color: #46516e;
+		margin-top: 2px;
+		margin-left: 0px;
+	}
+	.date {
+		position: absolute;
+		right: 5em;
+		padding-bottom: 2em;
+	}
+
+		</style>
+	</head>
+
+	<body>
+		<div class="header">
+			<h1 class="title">Pseudoprogramming</h1>
+			<h2 class="motto"> Milli milli moi</h2>
+		</div>
+
+		<div class="container">
+			<nav class="toc">
+<ul>
+
+<ul>
+
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#install-usage">install & usage</a></li>
+<li><a href="#custom-examples">Custom Examples</a></li>
+<li><a href="#faq">FAQ</a></li>
+<li><a href="#about-vim-support">About vim support</a></li>
+<li><a href="#reference">Reference</a></li>
+<li><a href="#buy-me-a-coffee">Buy Me A Coffee ☕️</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav><main><h1 align="center"> ✨ Markdown Preview for (Neo)vim ✨ </h1>
+<blockquote>
+<p>Powered by ❤️</p>
+</blockquote>
+<h3 id="introduction">Introduction</h3>
+<blockquote>
+<p>It only works on vim &gt;= 8.1 and neovim</p>
+</blockquote>
+<p>Preview markdown on your modern browser with synchronised scrolling and flexible configuration</p>
+<p>Main features:</p>
+<ul>
+<li>Cross platform (macos/linux/windows)</li>
+<li>Synchronised scrolling</li>
+<li>Fast asynchronous updates</li>
+<li><a href="https://github.com/Khan/KaTeX">Katex</a> for typesetting of math</li>
+<li><a href="https://github.com/plantuml/plantuml">Plantuml</a></li>
+<li><a href="https://github.com/knsv/mermaid">Mermaid</a></li>
+<li><a href="https://github.com/chartjs/Chart.js">Chart.js</a></li>
+<li><a href="https://github.com/bramp/js-sequence-diagrams">sequence-diagrams</a></li>
+<li><a href="https://github.com/adrai/flowchart.js">flowchart</a></li>
+<li><a href="https://github.com/mdaines/viz.js">dot</a></li>
+<li><a href="https://github.com/nagaozen/markdown-it-toc-done-right">Toc</a></li>
+<li>Emoji</li>
+<li>Task lists</li>
+<li>Local images</li>
+<li>Flexible configuration</li>
+</ul>
+<p><strong>Note</strong> it's no need <code>mathjax-support-for-mkdp</code> plugin for typesetting of math</p>
+<p><img src="https://user-images.githubusercontent.com/5492542/47603494-28e90000-da1f-11e8-9079-30646e551e7a.gif" alt="screenshot" /></p>
+<h3 id="install-usage">install & usage</h3>
+<p>Install with <a href="https://github.com/junegunn/vim-plug">vim-plug</a>:</p>
+<pre><code class="language-vim"><pre style="background-color:#2d2d2d;">
+<span style="color:#d3d0c8;">&quot; If you don&#39;t have nodejs and yarn
+</span><span style="color:#d3d0c8;">&quot; use pre build, add &#39;vim-plug&#39; to the filetype list so vim-plug can update this plugin
+</span><span style="color:#d3d0c8;">&quot; see: https://github.com/iamcco/markdown-preview.nvim/issues/50
+</span><span style="color:#d3d0c8;">Plug &#39;iamcco/markdown-preview.nvim&#39;, { &#39;do&#39;: { -&gt; mkdp#util#install() }, &#39;for&#39;: [&#39;markdown&#39;, &#39;vim-plug&#39;]}
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; If you have nodejs and yarn
+</span><span style="color:#d3d0c8;">Plug &#39;iamcco/markdown-preview.nvim&#39;, { &#39;do&#39;: &#39;cd app &amp;&amp; yarn install&#39;  }
+</span></pre>
+</code></pre>
+<p>Or install with <a href="https://github.com/Shougo/dein.vim">dein</a>:</p>
+<pre><code class="language-vim"><pre style="background-color:#2d2d2d;">
+<span style="color:#d3d0c8;">call dein#add(&#39;iamcco/markdown-preview.nvim&#39;, {&#39;on_ft&#39;: [&#39;markdown&#39;, &#39;pandoc.markdown&#39;, &#39;rmd&#39;],
+</span><span style="color:#d3d0c8;">					\ &#39;build&#39;: &#39;sh -c &quot;cd app &amp;&amp; yarn install&quot;&#39; })
+</span></pre>
+</code></pre>
+<p>Or with minpac:</p>
+<pre><code class="language-vim"><pre style="background-color:#2d2d2d;">
+<span style="color:#d3d0c8;">call minpac#add(&#39;iamcco/markdown-preview.nvim&#39;, {&#39;do&#39;: &#39;packloadall! | call mkdp#util#install()&#39;})
+</span></pre>
+</code></pre>
+<p>Or with <a href="https://github.com/vundlevim/vundle.vim">Vundle</a>:</p>
+<p>Place this in your <code>.vimrc</code> or <code>init.vim</code>,</p>
+<pre><code class="language-vim"><pre style="background-color:#2d2d2d;">
+<span style="color:#d3d0c8;">Plugin &#39;iamcco/markdown-preview.nvim&#39; 
+</span></pre>
+</code></pre>
+<p>... then run the following in vim</p>
+<pre><code class="language-vim"><pre style="background-color:#2d2d2d;">
+<span style="color:#d3d0c8;">:source %
+</span><span style="color:#d3d0c8;">:PluginInstall
+</span><span style="color:#d3d0c8;">:call mkdp#util#install()
+</span></pre>
+</code></pre>
+<p>Config:</p>
+<pre><code class="language-vim"><pre style="background-color:#2d2d2d;">
+<span style="color:#d3d0c8;">&quot; set to 1, nvim will open the preview window after entering the markdown buffer
+</span><span style="color:#d3d0c8;">&quot; default: 0
+</span><span style="color:#d3d0c8;">let g:mkdp_auto_start = 0
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; set to 1, the nvim will auto close current preview window when change
+</span><span style="color:#d3d0c8;">&quot; from markdown buffer to another buffer
+</span><span style="color:#d3d0c8;">&quot; default: 1
+</span><span style="color:#d3d0c8;">let g:mkdp_auto_close = 1
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; set to 1, the vim will refresh markdown when save the buffer or
+</span><span style="color:#d3d0c8;">&quot; leave from insert mode, default 0 is auto refresh markdown as you edit or
+</span><span style="color:#d3d0c8;">&quot; move the cursor
+</span><span style="color:#d3d0c8;">&quot; default: 0
+</span><span style="color:#d3d0c8;">let g:mkdp_refresh_slow = 0
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; set to 1, the MarkdownPreview command can be use for all files,
+</span><span style="color:#d3d0c8;">&quot; by default it can be use in markdown file
+</span><span style="color:#d3d0c8;">&quot; default: 0
+</span><span style="color:#d3d0c8;">let g:mkdp_command_for_global = 0
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; set to 1, preview server available to others in your network
+</span><span style="color:#d3d0c8;">&quot; by default, the server listens on localhost (127.0.0.1)
+</span><span style="color:#d3d0c8;">&quot; default: 0
+</span><span style="color:#d3d0c8;">let g:mkdp_open_to_the_world = 0
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; use custom IP to open preview page
+</span><span style="color:#d3d0c8;">&quot; useful when you work in remote vim and preview on local browser
+</span><span style="color:#d3d0c8;">&quot; more detail see: https://github.com/iamcco/markdown-preview.nvim/pull/9
+</span><span style="color:#d3d0c8;">&quot; default empty
+</span><span style="color:#d3d0c8;">let g:mkdp_open_ip = &#39;&#39;
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; specify browser to open preview page
+</span><span style="color:#d3d0c8;">&quot; default: &#39;&#39;
+</span><span style="color:#d3d0c8;">let g:mkdp_browser = &#39;&#39;
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; set to 1, echo preview page url in command line when open preview page
+</span><span style="color:#d3d0c8;">&quot; default is 0
+</span><span style="color:#d3d0c8;">let g:mkdp_echo_preview_url = 0
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; a custom vim function name to open preview page
+</span><span style="color:#d3d0c8;">&quot; this function will receive url as param
+</span><span style="color:#d3d0c8;">&quot; default is empty
+</span><span style="color:#d3d0c8;">let g:mkdp_browserfunc = &#39;&#39;
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; options for markdown render
+</span><span style="color:#d3d0c8;">&quot; mkit: markdown-it options for render
+</span><span style="color:#d3d0c8;">&quot; katex: katex options for math
+</span><span style="color:#d3d0c8;">&quot; uml: markdown-it-plantuml options
+</span><span style="color:#d3d0c8;">&quot; maid: mermaid options
+</span><span style="color:#d3d0c8;">&quot; disable_sync_scroll: if disable sync scroll, default 0
+</span><span style="color:#d3d0c8;">&quot; sync_scroll_type: &#39;middle&#39;, &#39;top&#39; or &#39;relative&#39;, default value is &#39;middle&#39;
+</span><span style="color:#d3d0c8;">&quot;   middle: mean the cursor position alway show at the middle of the preview page
+</span><span style="color:#d3d0c8;">&quot;   top: mean the vim top viewport alway show at the top of the preview page
+</span><span style="color:#d3d0c8;">&quot;   relative: mean the cursor position alway show at the relative positon of the preview page
+</span><span style="color:#d3d0c8;">&quot; hide_yaml_meta: if hide yaml metadata, default is 1
+</span><span style="color:#d3d0c8;">&quot; sequence_diagrams: js-sequence-diagrams options
+</span><span style="color:#d3d0c8;">&quot; content_editable: if enable content editable for preview page, default: v:false
+</span><span style="color:#d3d0c8;">&quot; disable_filename: if disable filename header for preview page, default: 0
+</span><span style="color:#d3d0c8;">let g:mkdp_preview_options = {
+</span><span style="color:#d3d0c8;">    \ &#39;mkit&#39;: {},
+</span><span style="color:#d3d0c8;">    \ &#39;katex&#39;: {},
+</span><span style="color:#d3d0c8;">    \ &#39;uml&#39;: {},
+</span><span style="color:#d3d0c8;">    \ &#39;maid&#39;: {},
+</span><span style="color:#d3d0c8;">    \ &#39;disable_sync_scroll&#39;: 0,
+</span><span style="color:#d3d0c8;">    \ &#39;sync_scroll_type&#39;: &#39;middle&#39;,
+</span><span style="color:#d3d0c8;">    \ &#39;hide_yaml_meta&#39;: 1,
+</span><span style="color:#d3d0c8;">    \ &#39;sequence_diagrams&#39;: {},
+</span><span style="color:#d3d0c8;">    \ &#39;flowchart_diagrams&#39;: {},
+</span><span style="color:#d3d0c8;">    \ &#39;content_editable&#39;: v:false,
+</span><span style="color:#d3d0c8;">    \ &#39;disable_filename&#39;: 0
+</span><span style="color:#d3d0c8;">    \ }
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; use a custom markdown style must be absolute path
+</span><span style="color:#d3d0c8;">&quot; like &#39;/Users/username/markdown.css&#39; or expand(&#39;~/markdown.css&#39;)
+</span><span style="color:#d3d0c8;">let g:mkdp_markdown_css = &#39;&#39;
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; use a custom highlight style must absolute path
+</span><span style="color:#d3d0c8;">&quot; like &#39;/Users/username/highlight.css&#39; or expand(&#39;~/highlight.css&#39;)
+</span><span style="color:#d3d0c8;">let g:mkdp_highlight_css = &#39;&#39;
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; use a custom port to start server or random for empty
+</span><span style="color:#d3d0c8;">let g:mkdp_port = &#39;&#39;
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; preview page title
+</span><span style="color:#d3d0c8;">&quot; ${name} will be replace with the file name
+</span><span style="color:#d3d0c8;">let g:mkdp_page_title = &#39;「${name}」&#39;
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; recognized filetypes
+</span><span style="color:#d3d0c8;">&quot; these filetypes will have MarkdownPreview... commands
+</span><span style="color:#d3d0c8;">let g:mkdp_filetypes = [&#39;markdown&#39;]
+</span></pre>
+</code></pre>
+<p>Mappings:</p>
+<pre><code class="language-vim"><pre style="background-color:#2d2d2d;">
+<span style="color:#d3d0c8;">&quot; normal/insert
+</span><span style="color:#d3d0c8;">&lt;Plug&gt;MarkdownPreview
+</span><span style="color:#d3d0c8;">&lt;Plug&gt;MarkdownPreviewStop
+</span><span style="color:#d3d0c8;">&lt;Plug&gt;MarkdownPreviewToggle
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; example
+</span><span style="color:#d3d0c8;">nmap &lt;C-s&gt; &lt;Plug&gt;MarkdownPreview
+</span><span style="color:#d3d0c8;">nmap &lt;M-s&gt; &lt;Plug&gt;MarkdownPreviewStop
+</span><span style="color:#d3d0c8;">nmap &lt;C-p&gt; &lt;Plug&gt;MarkdownPreviewToggle
+</span></pre>
+</code></pre>
+<p>Commands:</p>
+<pre><code class="language-vim"><pre style="background-color:#2d2d2d;">
+<span style="color:#d3d0c8;">&quot; Start the preview
+</span><span style="color:#d3d0c8;">:MarkdownPreview
+</span><span style="color:#d3d0c8;">
+</span><span style="color:#d3d0c8;">&quot; Stop the preview&quot;
+</span><span style="color:#d3d0c8;">:MarkdownPreviewStop
+</span></pre>
+</code></pre>
+<h3 id="custom-examples">Custom Examples</h3>
+<p><strong>Toc:</strong></p>
+<blockquote>
+<p>one of</p>
+</blockquote>
+<pre><code>${toc}
+[[toc]]
+[toc]
+[[_toc_]]
+</code></pre>
+<p><strong>Image Size:</strong></p>
+<pre><code class="language-markdown"><pre style="background-color:#2d2d2d;">
+<span style="color:#f99157;">![image]</span><span style="color:#d3d0c8;">(https://user-images.githubusercontent.com/5492542/47603494-28e90000-da1f-11e8-9079-30646e551e7a.gif =400x200)
+</span></pre>
+</code></pre>
+<p><strong>plantuml:</strong></p>
+<pre><code>@startuml
+Bob -&gt; Alice : hello
+@enduml
+</code></pre>
+<p>Or</p>
+<pre><code>``` plantuml
+Bob -&gt; Alice : hello
+```
+</code></pre>
+<p><strong>katex:</strong></p>
+<pre><code>$\sqrt{3x-1}+(1+x)^2$
+
+$$\begin{array}{c}
+
+\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &amp;
+= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} &amp; = 4 \pi \rho \\
+
+\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} &amp; = \vec{\mathbf{0}} \\
+
+\nabla \cdot \vec{\mathbf{B}} &amp; = 0
+
+\end{array}$$
+</code></pre>
+<p><strong>mermaid:</strong></p>
+<pre><code>``` mermaid
+gantt
+    dateFormat DD-MM-YYY
+    axisFormat %m/%y
+
+    title Example
+    section example section
+    activity :active, 01-02-2019, 03-08-2019
+```
+</code></pre>
+<p><strong>js-sequence-diagrams:</strong></p>
+<pre><code>``` sequence-diagrams
+Andrew-&gt;China: Says
+Note right of China: China thinks\nabout it
+China--&gt;Andrew: How are you?
+Andrew-&gt;&gt;China: I am good thanks!
+```
+</code></pre>
+<p><strong>flowchart:</strong></p>
+<pre><code>``` flowchart
+st=&gt;start: Start|past:&gt;http://www.google.com[blank]
+e=&gt;end: End|future:&gt;http://www.google.com
+op1=&gt;operation: My Operation|past
+op2=&gt;operation: Stuff|current
+sub1=&gt;subroutine: My Subroutine|invalid
+cond=&gt;condition: Yes
+or No?|approved:&gt;http://www.google.com
+c2=&gt;condition: Good idea|rejected
+io=&gt;inputoutput: catch something...|future
+
+st-&gt;op1(right)-&gt;cond
+cond(yes, right)-&gt;c2
+cond(no)-&gt;sub1(left)-&gt;op1
+c2(yes)-&gt;io-&gt;e
+c2(no)-&gt;op2-&gt;e
+```
+</code></pre>
+<p><strong>dot:</strong></p>
+<pre><code>``` dot
+digraph G {
+
+  subgraph cluster_0 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+    a0 -&gt; a1 -&gt; a2 -&gt; a3;
+    label = &quot;process #1&quot;;
+  }
+
+  subgraph cluster_1 {
+    node [style=filled];
+    b0 -&gt; b1 -&gt; b2 -&gt; b3;
+    label = &quot;process #2&quot;;
+    color=blue
+  }
+  start -&gt; a0;
+  start -&gt; b0;
+  a1 -&gt; b3;
+  b2 -&gt; a3;
+  a3 -&gt; a0;
+  a3 -&gt; end;
+  b3 -&gt; end;
+
+  start [shape=Mdiamond];
+  end [shape=Msquare];
+}
+```
+</code></pre>
+<p><strong>chart:</strong></p>
+<pre><code>``` chart
+{
+  &quot;type&quot;: &quot;pie&quot;,
+  &quot;data&quot;: {
+    &quot;labels&quot;: [
+      &quot;Red&quot;,
+      &quot;Blue&quot;,
+      &quot;Yellow&quot;
+    ],
+    &quot;datasets&quot;: [
+      {
+        &quot;data&quot;: [
+          300,
+          50,
+          100
+        ],
+        &quot;backgroundColor&quot;: [
+          &quot;#FF6384&quot;,
+          &quot;#36A2EB&quot;,
+          &quot;#FFCE56&quot;
+        ],
+        &quot;hoverBackgroundColor&quot;: [
+          &quot;#FF6384&quot;,
+          &quot;#36A2EB&quot;,
+          &quot;#FFCE56&quot;
+        ]
+      }
+    ]
+  },
+  &quot;options&quot;: {}
+}
+```
+</code></pre>
+<h3 id="faq">FAQ</h3>
+<p>Question: Why is the synchronised scrolling lagging?</p>
+<p>Answer: set <code>updatetime</code> to a small number, for instance: <code>set updatetime=100</code></p>
+<p><em>WSL 2 issue</em>: Can not open browser when using WSL 2 with terminal Vim.</p>
+<blockquote>
+<p>if you are using Ubuntu you can install xdg-utils using <code>sudo apt-get install -y xdg-utils</code>
+checkout <a href="https://github.com/iamcco/markdown-preview.nvim/issues/199">issue 199</a> for more detail.</p>
+</blockquote>
+<p>Question: How can I change the dark/light theme?</p>
+<p>Answer: The default theme is based on your system preferences.
+There is a button hidden in the header to change the theme. Place your mouse over the header to reveal it.</p>
+<p>To change it, there is a hidden button on the
+header. To show it, just put your mouse on the header.</p>
+<h3 id="about-vim-support">About vim support</h3>
+<p>Vim support is powered by <a href="https://github.com/neoclide/vim-node-rpc">vim-node-rpc</a></p>
+<blockquote>
+<p>This plugin is integrated with vim-node-rpc, therefore you don't need to install vim-node-rpc</p>
+</blockquote>
+<h3 id="reference">Reference</h3>
+<ul>
+<li><a href="https://github.com/neoclide/coc.nvim">coc.nvim</a></li>
+<li><a href="https://github.com/neoclide/vim-node-rpc">vim-node-rpc</a></li>
+<li><a href="https://github.com/chartjs/Chart.js">chart.js</a></li>
+<li><a href="https://github.com/highlightjs/highlight.js">highlight</a></li>
+<li><a href="https://github.com/neovim/node-client">neovim/node-client</a></li>
+<li><a href="https://github.com/zeit/next.js">next.js</a></li>
+<li><a href="https://github.com/iamcco/markdown.css">markdown.css</a></li>
+<li><a href="https://github.com/markdown-it/markdown-it">markdown-it</a></li>
+<li><a href="https://github.com/waylonflinn/markdown-it-katex">markdown-it-katex</a></li>
+<li><a href="https://github.com/gmunguia/markdown-it-plantuml">markdown-it-plantuml</a></li>
+<li><a href="https://github.com/tylingsoft/markdown-it-chart">markdown-it-chart</a></li>
+<li><a href="https://github.com/knsv/mermaid">mermaid</a></li>
+<li><a href="https://github.com/domenic/opener">opener</a></li>
+<li><a href="https://github.com/bramp/js-sequence-diagrams">sequence-diagrams</a></li>
+<li><a href="https://github.com/socketio/socket.io">socket.io</a></li>
+</ul>
+<h3 id="buy-me-a-coffee">Buy Me A Coffee ☕️</h3>
+<p><img src="https://img.shields.io/keybase/btc/iamcco.svg?style=popout-square" alt="btc" /></p>
+<p><img src="https://user-images.githubusercontent.com/5492542/42771079-962216b0-8958-11e8-81c0-520363ce1059.png" alt="image" /></p>
+</main>
+		</div>
+
+		<p class="date" id="date"></p>
+
+		<div class="network">
+			<ul>
+				<li class=".back"><a class=".back" href="https://programming.pseudot.xyz">Back</a></li>
+			</ul>
+		</div>
+
+		<script>
+			const d= new Date(document.lastModified);
+			var datestring = d.getDate()  + "/" + (d.getMonth()+1) + "/" + d.getFullYear() + " ";
+			document.getElementById("date").innerHTML = datestring;
+		</script>
+	</body>
+
+</html>
+

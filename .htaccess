@@ -42,3 +42,7 @@ AddDescription "new post!" "new-post.md"
 AddDescription "new post!" "new-post"  r
 AddDescription "Traditia traditia" "traditia-traditia.md"
 AddDescription "Traditia traditia" "traditia-traditia"  r
+AddDescription "Marfa este rea cu mine" "marfa-este-rea-cu-mine.md"
+AddDescription "Marfa este rea cu mine" "marfa-este-rea-cu-mine"  r
+AddDescription "MArfa" "marfa.md"
+AddDescription "" "mdprew"  r
