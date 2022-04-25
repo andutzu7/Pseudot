@@ -7776,3 +7776,4 @@ test" "test"  r
 AddDescription "ACuma merge" "acuma-merge.md"
 AddDescription "ACuma merge" "acuma-merge"  r
 AddDescription "Test for git" "test-for-git.md"
+AddDescription "Test for git" "test-for-git"  r
