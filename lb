@@ -53,10 +53,13 @@ publish() { \
 	printf "<div class='article'>\\n<h3 class='subtitle' id='%s'>%s</h3>\\n<p>%s... <small><a href='%s'>Read more &#187;</a></small> </p> \\n</div>\\n" "$base" "$realname" "$(head -n 5 "$webdir/.drafts/$basefile/$basefile.md")" "$webdir/$webtarget/posts/$basefile/$basefile.html"  > "$tmpdir/html2"
 	printf "<li>%s &ndash; <a href=\"%s\">%s</a></li>\\n" "$(date '+%Y %b %d')" "$webdir/$webtarget/posts/$basefile/$basefile.html" "$realname" > "$tmpdir/index"
 	sed -i "/<!-- LB -->/r $tmpdir/html" "$blogfile"
-	sed -i "/<!-- LB -->/r $tmpdir/html2"  "$webtarget_blog_file"
+	cat $tmpdir/html2 > "$webtarget_blog_file"
 	sed -i "/<!-- LB -->/r $tmpdir/index" "$indexfile"
 	sed -i "/ \"$base.html\"/d" "$archivefile"
 	echo "AddDescription \"$realname\" \"$basefile\" "  r>> "$archivefile"
+	article_path=$webdir/$webtarget_blog_file;
+	sed -i "/<div class='articles'>/r $article_path" $webdir/$webtarget/index.html
+	exit
 	rm "$webdir/$webtarget/posts/$basefile/$basefile.md"
 	rm -rf "$webdir/.drafts/$chosen"
 }
