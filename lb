@@ -1,0 +1,109 @@
+#!/bin/bash
+name="pseudot"
+protocol="https"
+webdir="$PWD"
+webroot="pseudot.xyz/" # Keep a trailing slash.
+www_var_folder_root="pseudot.xyz"
+blogfile="$webdir/$www_var_folder_root/$(date +%Y).html"
+indexfile="$webdir/$www_var_folder_root/blogindex.html"
+archivefile="$webdir/.htaccess"
+[ -z "$EDITOR" ] && EDITOR="vim"
+
+[ ! -d "$webdir/.drafts" ] &&
+read -erp "Initialize blog in $webdir?" ask &&
+	if [ "$ask" = "y" ]; then
+	printf "Initializing blog system...\\n"
+	mkdir -pv "$webdir/.drafts" || printf "Error. Do you have write permissions in this directory?\\n"
+	echo "Options +Indexes" > "$archivefile"
+else
+	exit
+fi
+
+newpost() { read -erp "Give a title for your post:
+	" title
+	echo "$title" | grep -q "\"" && printf "Double quotation marks (\") are not allowed in entry titles.\\n" && exit
+	url="$(echo "$title" | iconv -cf UTF-8 -t ASCII//TRANSLIT | tr -d '[:punct:]' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | sed "s/-\+/-/g;s/\(^-\|-\$\)//g")"
+	echo "AddDescription \"$title\" \"$url.md\"" >>  "$archivefile"|| { echo "Error: Is $archivefile writeable?"; exit; }
+	( [ -f "$webdir/.drafts/$url/$url.md" ] || [ -f "$webdir/$url/$url.md" ] ) && echo "There is already an existing draft or post of that same name/URL." && exit
+	mkdir -p "$webdir/.drafts/$url";
+	$EDITOR "$webdir/.drafts/$url/$url.md" ;}
+
+listandReturn() {
+	printf "Listing contents of %s\\n" "$1"
+	case "$(ls "$1" | wc -l)" in
+		0) echo "There's nothing to $2." && exit 1 ;;
+		1) number=1 && printf "There's only one entry to %s.\\nDefaulting selection to %s\\n" "$2" "$(ls -rc "$1" | awk -F '/' '{print $NF}')" ;;
+		*) ls -rc "$1" | awk -F '/' '{print $NF}' | nl
+                read -erp "Pick an entry by number to $2, or press Ctrl-C to cancel. " number ;;
+	esac
+	chosen="$(ls -rc "$1" | nl | grep -w " $number" | awk '{print $2}')"
+	basefile="$(basename "$chosen")" && base="${basefile%.*}"
+}
+
+publish() { \
+	delete draft
+	htaccessentry=$(grep "$basefile" "$archivefile")
+	realname="$(echo "$htaccessentry" | cut -d'"' -f2)"
+	webdate="$(date '+%a, %d %b %Y %H:%M:%S %z')" # But this visible date you can set to any format.
+	tmpdir=$(mktemp -d)
+	$(cp -r "$webdir/.drafts/$basefile" "$webdir/$webtarget/posts/")
+	$(markdown-to-standalone-html -t "$webdir/$webtarget/template.html" "$webdir/$webtarget/posts/$basefile/$basefile.md" > "$webdir/$webtarget/posts/$basefile/$basefile.html");
+	printf "<div class='entry'>\\n<h2 id='%s'>%s</h2>\\n<small>[<a href='%s'>standalone</a>]</small>\\n%s...\\n<small>%s</small>\\n</div>\\n" "$base" "$realname" "$webdir/$webtarget/posts/$basefile/$basefile.html" "$(head -n 5 "$webdir/.drafts/$basefile/$basefile.md" | sed -e 's/#/ /g')" "$webdate" > "$tmpdir/html"
+	printf "<div class='article'>\\n<h3 class='subtitle' id='%s'>%s</h3>\\n<p>%s... <small><a href='%s'>Read more &#187;</a></small> </p> \\n</div>\\n" "$base" "$realname" "$(head -n 5 "$webdir/.drafts/$basefile/$basefile.md" | sed -e 's/#/ /g')" "$webdir/$webtarget/posts/$basefile/$basefile.html"  > "$tmpdir/html2"
+	printf "<li>%s &ndash; <a href=\"%s\">%s</a></li>\\n" "$(date '+%Y %b %d')" "$webdir/$webtarget/posts/$basefile/$basefile.html" "$realname" > "$tmpdir/index"
+	cat $tmpdir/html > "$blogfile"
+	cat $tmpdir/html2 > "$webtarget_blog_file"
+	sed -i "/<!-- LB -->/r $tmpdir/index" "$indexfile"
+	sed -i "/ \"$base.html\"/d" "$archivefile"
+	echo "AddDescription \"$realname\" \"$basefile\" "  r>> "$archivefile"
+	article_path=$webdir/$webtarget_blog_file;
+	sed -i "/<div class='articles'>/r $article_path" $webdir/$webtarget/index.html
+	sed -i "/<p>Cele mai recente postari:<\/p>/r $blogfile" $webdir/$www_var_folder_root/index.html
+	rm $article_path;
+	rm "$webdir/$webtarget/posts/$basefile/$basefile.md"
+	rm -rf "$webdir/.drafts/$chosen"
+}
+
+confirm() { read -erp "Really $1 \"$base\"? (y/N) " choice && echo "$choice" | grep -qi "^y$" || exit 1 ;}
+
+delete() { \
+	indexpath=$webdir/$webtarget/posts/$base.html
+	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$webdir/$www_var_folder_root/index.html"
+	sed -i "/<div class='article'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$webdir/$webtarget/index.html"
+	# Maybe someday
+	sed -i "\@<li>.*<a href=\"$indexpath\">@d" "$indexfile"
+	rm -rf "$webdir/$webtarget/posts/$basefile" && [[ "$1" != "draft" ]] && printf "Old blog entry removed.\\n";
+}
+
+revise() {
+	if [ ! -d "$webdir/.drafts/$chosen" ];then
+	mkdir -p "$webdir/.drafts/${chosen%%.*}/";
+	fi
+	awk '/^<small>\[/{flag=1;next}/<footer>/{flag=0}flag' "$webdir/$webtarget/posts/$chosen/$chosen.html" > "$webdir/.drafts/$chosen/$chosen.html"
+	"$EDITOR" "$webdir/.drafts/${chosen%%.*}/$chosen.html"
+	printf "Revision stored in .drafts. Publish as normal entry when desired.\\n" ;}
+
+if [ -z $2 ]
+then
+
+echo "You must specify the site's prefix.";
+printf "Available options: \\n\\t1)blog\\n\\t2)programming\\n\\t3)books\\n\\t4)draw\\n\\t5)uc\\n";
+exit
+else
+website="$protocol://$2.$webroot";
+
+webtarget="$2.$www_var_folder_root"
+webtarget_blog_file="$2.$www_var_folder_root/$(date +%Y).html"
+touch $webtarget_blog_file;
+
+fi
+
+case "$1" in
+	a*) newpost ;;
+	e*) listandReturn "$webdir"/.drafts/ edit && "$EDITOR" "$webdir/.drafts/$chosen/$chosen.md" ;;
+	p*) listandReturn "$webdir"/.drafts/ publish && publish ;;
+	t*) listandReturn "$webdir"/.drafts/ trash && confirm trash && rm -rf "$webdir/.drafts/$chosen" && sed -i "/ \"$base.html\"/d" "$archivefile" ; printf "Draft deleted.\\n" ;;
+	d*) listandReturn "$webdir"/"$webtarget/posts" delete && confirm delete && delete && sed -i "/ \"$base.html\"/d" "$archivefile" ;;
+	r*) listandReturn "$webdir"/"$webtarget/posts" revise && revise ;;
+	*) printf "Usage:\\n  lb a:\\tnew draft\\n  lb e:\\tedit draft\\n  lb p:\\tpublish/finalize draft\\n  lb r:\\trevise published entry\\n  lb t:\\tdiscard draft\\n  lb d:\\tdelete published entry\\n\\nBe sure to have the following pattern added to your RSS feed, blog file and blog index:\\n\\n<!-- LB -->\\n\\nNew content will be added directly below that sequence. This is required.\\n" ;;
+esac
