@@ -90,7 +90,7 @@ echo "You must specify the site's prefix.";
 printf "Available options: \\n\\t1)blog\\n\\t2)programming\\n\\t3)books\\n\\t4)draw\\n\\t5)uc\\n";
 exit
 else
-website="$protocol://$2.$webroot";
+website="$protocol://$2.$www_var_folder_root";
 
 webtarget="$2.$www_var_folder_root"
 webtarget_blog_file="$2.$www_var_folder_root/$(date +%Y).html"
