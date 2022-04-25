@@ -7810,3 +7810,4 @@ Test for git
 Test for git
 test" "test"  r
 AddDescription "NAming test" "naming-test.md"
+AddDescription "NAming test" "naming-test"  r
