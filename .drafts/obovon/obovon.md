@@ -1,1 +1,0 @@
-Dao napo klasti

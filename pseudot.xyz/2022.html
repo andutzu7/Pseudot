@@ -12,6 +12,125 @@
 
 <!-- LB -->
 <div class='entry'>
+<h2 id='traditia-traditia'>Traditia traditia</h2>
+<small>[<a href='/mnt/win-f/Backups/Site/Pseudot/uc.pseudot.xyz/posts/traditia-traditia/traditia-traditia.html'>standalone</a>]</small>
+As vrea sa mearga acest test!!!...
+<small>Mon, 25 Apr 2022 03:09:50 +0300</small>
+</div>
+<div class='entry'>
+<h2 id='new-post'>new post!</h2>
+<small>[<a href='/mnt/win-f/Backups/Site/Pseudot/uc.pseudot.xyz/posts/new-post/new-post.html'>standalone</a>]</small>
+my new post...
+<small>Mon, 25 Apr 2022 03:07:52 +0300</small>
+</div>
+<div class='entry'>
+<h2 id='noapte-buna'>Noapte buna</h2>
+<small>[<a href='/mnt/win-f/Backups/Site/Pseudot/uc.pseudot.xyz/posts/noapte-buna/noapte-buna.html'>standalone</a>]</small>
+# Спакойная ночь!!
+### Спакойная ночь!!
+# Спакойная ночь!!
+### Спакойная ночь!!
+# Спакойная ночь!!...
+<small>Mon, 25 Apr 2022 03:06:44 +0300</small>
+</div>
+<div class='entry'>
+<h2 id='obovon'>Obovon</h2>
+<small>[<a href='/mnt/win-f/Backups/Site/Pseudot/uc.pseudot.xyz/posts/obovon/obovon.html'>standalone</a>]</small>
+Dao napo klasti...
+<small>Mon, 25 Apr 2022 03:05:34 +0300</small>
+</div>
+<div class='entry'>
+<h2 id='nane'>Nane</h2>
+<small>[<a href='/mnt/win-f/Backups/Site/Pseudot/uc.pseudot.xyz/posts/nane/nane.html'>standalone</a>]</small>
+# Nane este un rapper adevarat
+
+# Introducere
+
+Markdown este un mod de editare a textului.
+<small>Mon, 25 Apr 2022 02:59:51 +0300</small>
+</div>
+<div class='entry'>
+<h2 id='cioc-si-pusca'>Cioc si pusca</h2>
+<small>[<a href='/mnt/win-f/Backups/Site/Pseudot/uc.pseudot.xyz/posts/cioc-si-pusca/cioc-si-pusca.html'>standalone</a>]</small>
+# Veter ropa
+# Veter ropa
+# Veter ropa
+# Veter ropa
+# Veter ropa
+<small>Mon, 25 Apr 2022 02:57:12 +0300</small>
+</div>
+<div class='entry'>
+<h2 id='ucccc'>ucccc</h2>
+<small>[<a href='/mnt/win-f/Backups/Site/Pseudot/uc.pseudot.xyz/posts/ucccc/ucccc.html'>standalone</a>]</small>
+#heheeeeeeeIe
+#heheeeeeeeIe
+#heheeeeeeeIe
+#heheeeeeeeIe
+#heheeeeeeeIe
+<small>Mon, 25 Apr 2022 02:55:44 +0300</small>
+</div>
+<div class='entry'>
+<h2 id='MatrixMulMR'></h2>
+<small>[<a href='/mnt/win-f/Backups/Site/Pseudot/uc.pseudot.xyz/posts/MatrixMulMR/MatrixMulMR.md'>standalone</a>]</small>
+# Lab 2 - Tehnici Big Data
+##### @autor: Vavilov Andrei
+##### @grupa: SDTW 1B
+----------------------------------
+
+## Sarcina 1:
+*Proiectati si implementati o solutie MapReduce pentru a contoriza numarul de aparitii ale cuvintelor intr-un fisier text.*
+###### Soluție propusă:
+- Dat fiind un text de intrare, primul pas este despărțirea componentelor sale(cuvinte) în token-uri.
+- În faza de mapare creez tuplele de forma *(token,1)*, unde token este un cuvânt din text iar 1 este numârul
+de apariții a acestuia.
+- Fiecare cuvânt va avea inițial valoarea atribuită 1, indiferent dacă acesta a mai fost întâlnit în text sau nu.
+- Etapa de combinare presupune sortarea split-ului de tuple în ordine lexicografică.
+- Etapa de reducere presupune sumarea valorilor de frecvență a itemilor cu aceeași cheie (token).
+
+###### Utilizare:
+```
+	python word_count.py
+```
+###### Exemplu rezultat:
+
+![WC_OUTPUT](./WordCountMR/exemplu_output.png)
+
+## Sarcina 2:
+_Proiectati si implementati o solutie MapReduce pentru a înmulti doua matrice(patratice)._
+
+###### Soluție propusă:
+- Fișierul de intrare conține pe fiecare rând informații ce descriu un rând al unei matrici
+  (ex. M,0,0,63)
+- În faza de mapare procesam fisierul de intrare pentru a obtine perechi de forma
+**(i,k)(M,j,M_ij)** (pentru matricea M) si **(i,k),(N,j,N_jk)** (pentru matricea N), unde:
+    - i = nr de coloane din matricea M
+    - j = nr de coloane din M(si implicit nr de linii din N)
+    - k = nr de coloane din N
+    - M_ij/N_jk elementul din matrice aflat la indexul dat
+- Etapa de combinare este executata cu ajutorul functiei sort din linux și in urma acesteia
+tuplele generate in etapa de mapare pot fi procesate in functie de indecsii i,k.
+- Etapa de reducere constă in următorii pasi:
+    - Salvarea intr-o lista a tuturor valorilor din ambele matrici care au aceiasi cheie, sub forma de tuple
+    care contin indexul si valoarea care se gaseste la o anumita cheie
+    - Calcularea sumei produselor elementelor cu aceiasi cheie(partea efectiva de calcul a produsului matricii)
+    - Pentru fiecare index din matricea reuzultat, returnarea cheii și valorii de interes.
+
+###### Utilizare:
+Pentru simplificarea procesului de rulare, este suficientă execuția unui script bash. Aceasta se poate realiza
+apelând următoarea comandă:
+```
+	sh run.sh
+```
+###### Exemplu rezultat:
+
+
+![MATRIX_MUL_OUTPUT](./MatrixMulPy/matrix_mul_output.png)
+
+###### Bibliografie problema 2:
+https://github.com/amberm291/MatrixMultiplyMR
+<small>Mon, 25 Apr 2022 02:51:01 +0300</small>
+</div>
+<div class='entry'>
 <h2 id='sex-and-the-city'>sex and the city</h2>
 <small>[<a href='/mnt/win-f/Backups/Site/Pseudot/programming.pseudot.xyz/posts/sex-and-the-city/sex-and-the-city.md'>standalone</a>]</small>
 sex and the *city*
