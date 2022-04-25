@@ -4,8 +4,7 @@ protocol="https"
 webdir="$PWD"
 webroot="pseudot.xyz/" # Keep a trailing slash.
 www_var_folder_root="pseudot.xyz"
-css="$webdir/$www_var_folder_root/indexstyle.css"
-blogfile="$webroot/$(date +%Y).html"
+blogfile="$webdir/$www_var_folder_root/$(date +%Y).html"
 indexfile="$webdir/$www_var_folder_root/blogindex.html"
 archivefile="$webdir/.htaccess"
 [ -z "$EDITOR" ] && EDITOR="vim"
@@ -49,17 +48,18 @@ publish() { \
 	tmpdir=$(mktemp -d)
 	$(cp -r "$webdir/.drafts/$basefile" "$webdir/$webtarget/posts/")
 	$(markdown-to-standalone-html -t "$webdir/$webtarget/template.html" "$webdir/$webtarget/posts/$basefile/$basefile.md" > "$webdir/$webtarget/posts/$basefile/$basefile.html");
-	printf "<div class='entry'>\\n<h2 id='%s'>%s</h2>\\n<small>[<a href='%s'>standalone</a>]</small>\\n%s...\\n<small>%s</small>\\n</div>\\n" "$base" "$realname" "$webdir/$webtarget/posts/$basefile/$basefile.html" "$(head -n 5 "$webdir/.drafts/$basefile/$basefile.md")" "$webdate" > "$tmpdir/html"
-	printf "<div class='article'>\\n<h3 class='subtitle' id='%s'>%s</h3>\\n<p>%s... <small><a href='%s'>Read more &#187;</a></small> </p> \\n</div>\\n" "$base" "$realname" "$(head -n 5 "$webdir/.drafts/$basefile/$basefile.md")" "$webdir/$webtarget/posts/$basefile/$basefile.html"  > "$tmpdir/html2"
+	printf "<div class='entry'>\\n<h2 id='%s'>%s</h2>\\n<small>[<a href='%s'>standalone</a>]</small>\\n%s...\\n<small>%s</small>\\n</div>\\n" "$base" "$realname" "$webdir/$webtarget/posts/$basefile/$basefile.html" "$(head -n 5 "$webdir/.drafts/$basefile/$basefile.md" | sed -e 's/#/ /g')" "$webdate" > "$tmpdir/html"
+	printf "<div class='article'>\\n<h3 class='subtitle' id='%s'>%s</h3>\\n<p>%s... <small><a href='%s'>Read more &#187;</a></small> </p> \\n</div>\\n" "$base" "$realname" "$(head -n 5 "$webdir/.drafts/$basefile/$basefile.md" | sed -e 's/#/ /g')" "$webdir/$webtarget/posts/$basefile/$basefile.html"  > "$tmpdir/html2"
 	printf "<li>%s &ndash; <a href=\"%s\">%s</a></li>\\n" "$(date '+%Y %b %d')" "$webdir/$webtarget/posts/$basefile/$basefile.html" "$realname" > "$tmpdir/index"
-	sed -i "/<!-- LB -->/r $tmpdir/html" "$blogfile"
+	cat $tmpdir/html > "$blogfile"
 	cat $tmpdir/html2 > "$webtarget_blog_file"
 	sed -i "/<!-- LB -->/r $tmpdir/index" "$indexfile"
 	sed -i "/ \"$base.html\"/d" "$archivefile"
 	echo "AddDescription \"$realname\" \"$basefile\" "  r>> "$archivefile"
 	article_path=$webdir/$webtarget_blog_file;
 	sed -i "/<div class='articles'>/r $article_path" $webdir/$webtarget/index.html
-	exit
+	sed -i "/<p>Cele mai recente postari:<\/p>/r $blogfile" $webdir/$www_var_folder_root/index.html
+	rm $article_path;
 	rm "$webdir/$webtarget/posts/$basefile/$basefile.md"
 	rm -rf "$webdir/.drafts/$chosen"
 }
@@ -67,9 +67,13 @@ publish() { \
 confirm() { read -erp "Really $1 \"$base\"? (y/N) " choice && echo "$choice" | grep -qi "^y$" || exit 1 ;}
 
 delete() { \
-	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$blogfile"
-	sed -i "/<li>.*<a href=\"$base.html\">/d" "$indexfile"
-	rm -rf "$webdir/$webtarget/posts/$basefile" && [[ "$1" != "draft" ]] && printf "Old blog entry removed.\\n";}
+	indexpath=$webdir/$webtarget/posts/$base.html
+	sed -i "/<div class='entry'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$webdir/$www_var_folder_root/index.html"
+	sed -i "/<div class='article'>/{:a;N;/<\\/div>/!ba};/id='$base'/d" "$webdir/$webtarget/index.html"
+	# Maybe someday
+	sed -i "\@<li>.*<a href=\"$indexpath\">@d" "$indexfile"
+	rm -rf "$webdir/$webtarget/posts/$basefile" && [[ "$1" != "draft" ]] && printf "Old blog entry removed.\\n";
+}
 
 revise() {
 	if [ ! -d "$webdir/.drafts/$chosen" ];then
@@ -90,6 +94,7 @@ website="$protocol://$2.$webroot";
 
 webtarget="$2.$www_var_folder_root"
 webtarget_blog_file="$2.$www_var_folder_root/$(date +%Y).html"
+touch $webtarget_blog_file;
 
 fi
 

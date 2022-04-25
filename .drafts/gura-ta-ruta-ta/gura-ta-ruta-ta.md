@@ -1,1 +1,0 @@
-spere inima mea
