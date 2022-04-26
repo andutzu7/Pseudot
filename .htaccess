@@ -8254,3 +8254,4 @@ Un test adevarat
 AddDescription "music test" "music-test.md"
 AddDescription "blog blog" "blog-blog.md"
 AddDescription "my new post" "my-new-post.md"
+AddDescription "my new post" "my-new-post"  r
