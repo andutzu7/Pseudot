@@ -82,10 +82,10 @@ publish() { \
 
 confirm() { read -erp "Really $1 \"$base\"? (y/N) " choice && echo "$choice" | grep -qi "^y$" || exit 1 ;}
 
-push() { git add . ; git commit -m "new post" ; git push "https://$gittoken/$gitrepo";}
+# push() { git add . ; git commit -m "new post" ; git push "https://$gittoken/$gitrepo";}
 
 
-impose_changes() { ssh -i ~/.ssh/wsssh/id_rsa  $remotehost -t "cd /var/www;/bin/git pull;/bin/systemctl restart nginx" ;}
+# impose_changes() { ssh -i ~/.ssh/wsssh/id_rsa  $remotehost -t "cd /var/www;/bin/git pull;/bin/systemctl restart nginx" ;}
 
 delete() { \
 	indexpath=$webdir/$webtarget/posts/$base.html
