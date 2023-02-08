@@ -1,1 +1,0 @@
-mintest3
