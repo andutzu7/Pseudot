@@ -1,0 +1,52 @@
+baseURL: https://catalog.pseudot.org
+defaultContentLanguage: 'en'
+theme: eternity
+
+params:
+  copyright: All rights reserved. # todo: set your copyright type.
+  author: Andrei Vavilov
+  dontShowSource: false # please, do not do this :)
+  portfolio:
+    columns:
+      desktop:
+        nature: 4
+        archive: 6
+        people: 2
+        default: 3
+      mobile:
+        default: 2
+        archive: 3
+        people: 1
+  socials:
+    # todo: change these links.
+    - icon: 'far fa-envelope fa-lg'
+      url: 'mailto:andreivavilov@pseudot.org'
+      landing: true
+  homepage: "/catalog" # homepage link, mostly same with menu.main[0]
+  specialPages:
+    - catalog
+    - archive
+  bypassWelcomePage: true # redirects "/" to "homepage" when it's true.
+  disableWelcomePageBackground: true # disables the background image on the homepage
+  plausible: '' # todo: set your plausible id.
+  disableRadius: true
+  moveIt: false  # Moves Title and Meta info down, only visible when scroll.
+  disableAlwaysResize: false
+
+markup:
+  defaultMarkdownHandler: goldmark
+  goldmark:
+    renderer:
+      unsafe: true
+
+taxonomies:
+  tag: tags
+
+permalinks:
+  catalog: ":filename/"
+
+menu:
+  main:
+    - name:
+      url: /catalog/
+      weight: 1
