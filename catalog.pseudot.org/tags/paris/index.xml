@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>publicite on </title>
-    <link>https://catalog.pseudot.org/tags/publicite/</link>
-    <description>Recent content in publicite on </description>
-    <generator>Hugo -- gohugo.io</generator><atom:link href="https://catalog.pseudot.org/tags/publicite/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Ancienne publicité «Extrait de Viande Liebig»</title>
-      <link>https://catalog.pseudot.org/publicite-6/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://catalog.pseudot.org/publicite-6/</guid>
-      <description>Acheter maintenant: cliquez ici </description>
-    </item>
-    
+    <title>paris on </title>
+    <link>https://catalog.pseudot.org/tags/paris/</link>
+    <description>Recent content in paris on </description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://catalog.pseudot.org/tags/paris/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Paris, Ancienne publicité «Maison Arstide Boucicaut»</title>
       <link>https://catalog.pseudot.org/publicite-1/</link>
